@@ -396,3 +396,17 @@ if __name__ == '__main__':
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text_input))
     print("🚀 SAIF BOT [Multi-Account Engine] يعمل الآن بكامل طاقته...")
     app.run_polling()
+from flask import Flask
+import threading
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Bot is alive!"
+
+def run_web():
+    app.run(host='0.0.0.0', port=10000)
+
+# تشغيل خادم الويب في خلفية البوت
+threading.Thread(target=run_web).start()
