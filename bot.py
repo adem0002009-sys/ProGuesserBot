@@ -48,8 +48,8 @@ def get_user(user_id):
             "is_vip": False,
             "vip_expire": None,
             "used_key": None,
-            "accounts": [],          # قائمة الحسابات المضافة متعددة
-            "active_account_idx": 0, # الحساب الحالي المحدد
+            "accounts": [],
+            "active_account_idx": 0,
             "spam_status": False,
             "guess_status": False
         }
@@ -91,7 +91,6 @@ def parse_jwt_token(jwt_str):
         print(f"JWT Parse Error: {e}")
         return None
 
-# القائمة الرئيسية المطابقة للصورة الثانية
 def get_main_menu_keyboard():
     keyboard = [
         [
@@ -109,7 +108,6 @@ def get_main_menu_keyboard():
     ]
     return InlineKeyboardMarkup(keyboard)
 
-# قائمة التحكم بالحساب المطابقة للصورة الأولى
 def get_account_menu_keyboard(user):
     spam_icon = "🟢 يعمل" if user.get("spam_status") else "🔴 متوقف"
     guess_icon = "🟢 يعمل" if user.get("guess_status") else "🔴 متوقف"
@@ -193,12 +191,11 @@ async def handle_text_input(update: Update, context: ContextTypes.DEFAULT_TYPE):
             
             if uid in user_states:
                 del user_states[uid]
-            await update.message.reply_text(f"✅ تم تفعيل المفتاح بنجاح! استمتع بجميع الميزات والخصائص المزة.\n\nأرسل /start للوصول للقائمة.")
+            await update.message.reply_text(f"✅ تم تفعيل المفتاح بنجاح! استمتع بجميع الميزات والخصائص.\n\nأرسل /start للوصول للقائمة.")
         else:
-            await update.message.reply_text("❌ المفتاح غير صالح أو منتهي الصلاحية! تواصل مع المطور شراء تفعيل.")
+            await update.message.reply_text("❌ المفتاح غير صالح أو منتهي الصلاحية! تواصل مع المطور لشراء تفعيل.")
         return
 
-    # حالة إضافة حساب جديد عبر إرسال التوكن
     if state == "waiting_for_token":
         jwt_match = re.search(r'jwt_token=([A-Za-z0-9_\-\.]+)', txt) or ('.' in txt and len(txt) > 50)
         if jwt_match:
@@ -271,7 +268,6 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if data == "none":
         return
 
-    # تفاعلات القائمة الرئيسية
     if data == "add_account":
         user_states[uid] = "waiting_for_token"
         await query.message.reply_text("➕ أرسل الآن رابط الـ JWT Token الخاص بالحساب الجديد ليتم إضافته:")
@@ -326,7 +322,6 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif data == "help_menu":
         await query.message.reply_text("❓ مساعدة البوت:\nقم بإضافة حسابك عبر الـ JWT Token، ثم اختر 'التحكم في الحساب' لتنفيذ العمليات.")
 
-    # تفاعلات قائمة التحكم بالحساب
     elif data == "check_email":
         accounts = user.get("accounts", [])
         idx = user.get("active_account_idx", 0)
