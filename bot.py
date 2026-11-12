@@ -79,18 +79,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if user_id == ADMIN_ID:
         welcome_text += "\nأوامر الأدمن الخاصة بك:\n• `/gen [ساعات]` - لتوليد مفتاح اشتراك جديد."
         
-    await update.message.reply_text(welcome_text)
+    await update.message.reply_text(welcome_text, parse_mode="Markdown")
 
-# أمر حفظ الآيدي
+# أمر حفظ الآيدي (مع إضافة strip لتفادي الفراغات المخفية)
 async def add_id(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = str(update.effective_user.id)
     args = context.args
     
     if not args:
-        await update.message.reply_text("❌ خطأ! يرجى كتابة الآيدي بعد الأمر. مثال:\n`/addid 123456789`")
+        await update.message.reply_text("❌ خطأ! يرجى كتابة الآيدي بعد الأمر. مثال:\n`/addid 123456789`", parse_mode="Markdown")
         return
         
-    player_id = args[0]
+    player_id = args[0].strip()
     users_data = load_json(USERS_FILE)
     
     users_data[user_id] = {
