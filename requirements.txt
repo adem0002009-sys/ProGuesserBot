@@ -1,6 +1,2 @@
-python-telegram-botpython-telegram-bot
-flask
-aiohttp
-
-flask
+python-telegram-bot
 aiohttp
